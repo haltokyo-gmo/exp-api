@@ -1,0 +1,23 @@
+{
+  "name": "exp-api",
+  "version": "1.0.0",
+  "description": "APIの調査用リポジトリ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haltokyo-gmo/exp-api.git"
+  },
+  "keywords": [],
+  "author": "himu62",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/haltokyo-gmo/exp-api/issues"
+  },
+  "homepage": "https://github.com/haltokyo-gmo/exp-api#readme",
+  "dependencies": {
+    "jquery": "^3.1.1"
+  }
+}
