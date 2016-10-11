@@ -1,10 +1,69 @@
 $(function() {
+	var canvas = $('#canvas')[0];
+	var ctx = canvas.getContext('2d');
+
+	function MaxEmotion(scores) {
+		var max = 0;
+
+		if(scores.anger > max) {
+			max = scores.anger;
+		}
+		if(scores.contempt > max) {
+			max = scores.contempt;
+		}
+		if(scores.disgust > max) {
+			max = scores.disgust;
+		}
+		if(scores.fear > max) {
+			max = scores.fear;
+		}
+		if(scores.happiness > max) {
+			max = scores.happiness;
+		}
+		if(scores.neutral > max) {
+			max = scores.neutral;
+		}
+		if(scores.sadness > max) {
+			max = scores.sadness;
+		}
+		if(scores.surprise > max) {
+			max = scores.surprise;
+		}
+
+		switch(max) {
+			case scores.anger:
+				return 'anger ' + scores.anger.toFixed(3);
+			case scores.contempt:
+				return 'contempt ' + scores.contempt.toFixed(3);
+			case scores.disgust:
+				return 'disgust ' + scores.disgust.toFixed(3);
+			case scores.fear:
+				return 'fear ' + scores.fear.toFixed(3);
+			case scores.happiness:
+				return 'happiness ' + scores.happiness.toFixed(3);
+			case scores.neutral:
+				return 'neutral ' + scores.neutral.toFixed(3);
+			case scores.sadness:
+				return 'sadness ' + scores.sadness.toFixed(3);
+			case scores.surprise:
+				return 'surprise ' + scores.surprise.toFixed(3);
+			default:
+				return 'none';
+		}
+	}
+
 	$('#input').on('change', function(e) {
 		var file = e.target.files[0];
 
 		var r = new FileReader();
 		r.onload = function() {
-			$('#image').attr('src', r.result);
+			var img = new Image();
+			img.onload = function() {
+				canvas.width = img.width;
+				canvas.height = img.height;
+				ctx.drawImage(img, 0, 0);
+			};
+			img.src = r.result;
 		};
 		r.readAsDataURL(file);
 
@@ -14,7 +73,7 @@ $(function() {
 			data: file,
 			dataType: 'json',
 			headers: {
-				'Ocp-Apim-Subscription-Key': '5950dd30a8184b6bb9996ae5952c28e7'
+				'Ocp-Apim-Subscription-Key': 'api key here'
 			},
 			method: 'POST',
 			processData: false,
@@ -23,6 +82,14 @@ $(function() {
 		.done(function(data) {
 			console.log(data);
 			$('#text').text(JSON.stringify(data));
+
+			for(var i in data) {
+				var rect = data[i].faceRectangle;
+
+				ctx.beginPath();
+				ctx.strokeRect(rect.left, rect.top, rect.width, rect.height);
+				ctx.fillText(MaxEmotion(data[i].scores), rect.left, rect.top - 12);
+			}
 		})
 		.fail(function(error) {
 			console.log(error);
